@@ -22,7 +22,7 @@ export default function Home() {
               WatchQueue
             </h1>
           </div>
-          
+
           {/* User Selector จำลองการเปลี่ยน User */}
           <UserSelector currentUserId={userId} onUserChange={setUserId} />
         </div>
@@ -42,7 +42,7 @@ export default function Home() {
       <section className="px-6 relative z-10">
         {/* Background Glow Effect */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
-        
+
         <Catalog userId={userId} />
       </section>
     </main>
