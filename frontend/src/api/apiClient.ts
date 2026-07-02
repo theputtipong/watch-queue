@@ -1,34 +1,70 @@
 // src/api/apiClient.ts
 /**
- * ตั้งค่า API Client พื้นฐานสำหรับเรียกไปที่ Backend
- * หากเราใช้ Axios ก็สามารถตั้งค่า interceptors ได้ที่นี่
- * แต่เพื่อความง่าย เราจะใช้ native fetch API
+ * API Client พร้อมการแยกแยะ Error (Network vs Server Error)
+ * และรองรับ AbortSignal (ผ่าน options)
  */
 
 const BASE_URL = 'http://localhost:3001/api';
 
+export class ApiError extends Error {
+  constructor(public message: string, public status: number, public type: 'NETWORK' | 'SERVER') {
+    super(message);
+    this.name = 'ApiError';
+  }
+}
+
+async function handleResponse(res: Response) {
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({ message: res.statusText }));
+    throw new ApiError(errorBody.message || 'เกิดข้อผิดพลาดจากเซิร์ฟเวอร์', res.status, 'SERVER');
+  }
+  return res.json();
+}
+
+function handleFetchError(error: any): never {
+  if (error.name === 'AbortError') {
+    throw error; // ให้ React Query หรือผู้เรียกจัดการต่อ
+  }
+  if (error instanceof ApiError) {
+    throw error;
+  }
+  // ถ้าไม่ใช่ ApiError และไม่ใช่ AbortError แสดงว่าเป็น Network Error (เช่นเน็ตหลุด)
+  throw new ApiError(`Network Error: ${error.message}`, 0, 'NETWORK');
+}
+
 export const apiClient = {
-  get: async (endpoint: string) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`);
-    if (!res.ok) throw new Error(`GET ${endpoint} failed`);
-    return res.json();
+  get: async (endpoint: string, options?: RequestInit) => {
+    try {
+      const res = await fetch(`${BASE_URL}${endpoint}`, options);
+      return await handleResponse(res);
+    } catch (error) {
+      handleFetchError(error);
+    }
   },
-  put: async (endpoint: string, body: any) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error(await res.text());
-    return res.json();
+  put: async (endpoint: string, body: any, options?: RequestInit) => {
+    try {
+      const res = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        ...options,
+      });
+      return await handleResponse(res);
+    } catch (error) {
+      handleFetchError(error);
+    }
   },
-  delete: async (endpoint: string, body: any) => {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    if (!res.ok) throw new Error(await res.text());
-    return res.json();
+  delete: async (endpoint: string, body: any, options?: RequestInit) => {
+    try {
+      const res = await fetch(`${BASE_URL}${endpoint}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+        ...options,
+      });
+      return await handleResponse(res);
+    } catch (error) {
+      handleFetchError(error);
+    }
   }
 };

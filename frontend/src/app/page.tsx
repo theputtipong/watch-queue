@@ -2,9 +2,10 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { Catalog } from '../components/Catalog/Catalog';
 import { UserSelector } from '../components/Shared/UserSelector';
-import { PlaySquare } from 'lucide-react';
+import { PlaySquare, ListVideo } from 'lucide-react';
 
 export default function Home() {
   const [userId, setUserId] = useState('user1');
@@ -23,8 +24,14 @@ export default function Home() {
             </h1>
           </div>
 
-          {/* User Selector จำลองการเปลี่ยน User */}
-          <UserSelector currentUserId={userId} onUserChange={setUserId} />
+          <div className="flex items-center gap-4">
+            <Link href="/my-queue" className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition">
+              <ListVideo className="w-4 h-4" />
+              <span>My Queue</span>
+            </Link>
+            {/* User Selector จำลองการเปลี่ยน User */}
+            <UserSelector currentUserId={userId} onUserChange={setUserId} />
+          </div>
         </div>
       </header>
 
