@@ -1,6 +1,4 @@
-// src/app/my-queue/page.tsx
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { ItemCard } from '../../components/ItemCard/ItemCard';
@@ -9,23 +7,17 @@ import { useCatalog } from '../../hooks/useCatalog';
 import { useUserQueue } from '../../hooks/useUserQueue';
 import { UserSelector } from '../../components/Shared/UserSelector';
 import { ArrowLeft, ListVideo } from 'lucide-react';
-
 export default function MyQueuePage() {
   const [userId, setUserId] = useState('user1');
-
   const { data: contents = [], isLoading: isContentsLoading } = useCatalog({ search: '', genre: 'All' });
   const { data: userQueue = [], isLoading: isQueueLoading } = useUserQueue(userId);
-
   const isLoading = isContentsLoading || isQueueLoading;
-
-  // กรองเฉพาะวิดีโอที่อยู่ในคิวของผู้ใช้ปัจจุบัน
   const queuedContents = contents.filter(item => 
     userQueue.some(q => q.videoId === item.id && (q.state === 'QUEUED' || q.state === 'WATCHED'))
   );
-
   return (
     <main className="min-h-screen bg-black text-white selection:bg-blue-500/30">
-      {/* Header */}
+      {}
       <header className="sticky top-0 z-40 bg-black/50 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-4">
@@ -42,14 +34,12 @@ export default function MyQueuePage() {
           <UserSelector currentUserId={userId} onUserChange={setUserId} />
         </div>
       </header>
-
-      {/* Main Content */}
+      {}
       <section className="px-6 py-12 max-w-7xl mx-auto relative z-10">
         <div className="mb-8">
           <h2 className="text-3xl font-bold">วิดีโอที่บันทึกไว้</h2>
           <p className="text-gray-400 mt-2">รายการทั้งหมดที่คุณบันทึกไว้ในคิวหรือดูจบแล้ว</p>
         </div>
-
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)}

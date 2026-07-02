@@ -1,4 +1,3 @@
-// src/types/index.ts
 export interface VideoItem {
   id: string;
   title: string;
@@ -8,9 +7,7 @@ export interface VideoItem {
   year: number;
   rating: string;
 }
-
 export type QueueState = 'UNSAVED' | 'QUEUED' | 'WATCHED';
-
 export interface QueueItem {
   videoId: string;
   state: QueueState;

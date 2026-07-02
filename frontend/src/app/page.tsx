@@ -1,18 +1,14 @@
-// src/app/page.tsx
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import { Catalog } from '../components/Catalog/Catalog';
 import { UserSelector } from '../components/Shared/UserSelector';
 import { PlaySquare, ListVideo } from 'lucide-react';
-
 export default function Home() {
   const [userId, setUserId] = useState('user1');
-
   return (
     <main className="min-h-screen bg-black text-white selection:bg-blue-500/30">
-      {/* Header */}
+      {}
       <header className="sticky top-0 z-40 bg-black/50 backdrop-blur-xl border-b border-white/10">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -23,19 +19,17 @@ export default function Home() {
               WatchQueue
             </h1>
           </div>
-
           <div className="flex items-center gap-4">
             <Link href="/my-queue" className="flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition">
               <ListVideo className="w-4 h-4" />
               <span>My Queue</span>
             </Link>
-            {/* User Selector จำลองการเปลี่ยน User */}
+            {}
             <UserSelector currentUserId={userId} onUserChange={setUserId} />
           </div>
         </div>
       </header>
-
-      {/* Hero Section */}
+      {}
       <section className="px-6 py-12 md:py-20 text-center max-w-4xl mx-auto">
         <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">
           Your Personal <span className="text-blue-500">Watch</span> List
@@ -44,12 +38,10 @@ export default function Home() {
           ค้นหาและจัดการคิววิดีโอที่คุณต้องการดูได้อย่างง่ายดาย พร้อมระบบบันทึกสถานะเรียลไทม์ (Optimistic UI)
         </p>
       </section>
-
-      {/* Main Content: Catalog Component */}
+      {}
       <section className="px-6 relative z-10">
-        {/* Background Glow Effect */}
+        {}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none" />
-
         <Catalog userId={userId} />
       </section>
     </main>

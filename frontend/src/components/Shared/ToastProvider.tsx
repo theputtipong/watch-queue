@@ -1,36 +1,25 @@
-// src/components/Shared/ToastProvider.tsx
 'use client';
-
 import { useEffect, useState } from 'react';
 import { AlertCircle, X } from 'lucide-react';
-
 interface ToastMessage {
   id: number;
   message: string;
 }
-
 export function ToastProvider() {
   const [toasts, setToasts] = useState<ToastMessage[]>([]);
-
   useEffect(() => {
-    // รับ Event กรณีเกิด Error จากการเรียก API ใน hook
     const handleShowToast = (e: Event) => {
       const customEvent = e as CustomEvent;
       const newToast = { id: Date.now(), message: customEvent.detail.message };
       setToasts((prev) => [...prev, newToast]);
-
-      // ลบออกอัตโนมัติหลัง 3 วินาที
       setTimeout(() => {
         setToasts((prev) => prev.filter((t) => t.id !== newToast.id));
       }, 3000);
     };
-
     window.addEventListener('SHOW_TOAST', handleShowToast);
     return () => window.removeEventListener('SHOW_TOAST', handleShowToast);
   }, []);
-
   if (toasts.length === 0) return null;
-
   return (
     <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
       {toasts.map((toast) => (

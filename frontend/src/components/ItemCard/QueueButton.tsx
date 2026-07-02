@@ -1,17 +1,12 @@
-// src/components/ItemCard/QueueButton.tsx
 'use client';
-
 import { Play, Plus, Check } from 'lucide-react';
 import { QueueState } from '../../types';
-
 interface QueueButtonProps {
   state: QueueState;
   isMutating: boolean;
   onChangeState: (newState: QueueState) => void;
 }
-
 export function QueueButton({ state, isMutating, onChangeState }: QueueButtonProps) {
-  // สไตล์และไอคอนสำหรับแต่ละ State
   const config = {
     UNSAVED: {
       label: 'Add to Queue',
@@ -32,10 +27,8 @@ export function QueueButton({ state, isMutating, onChangeState }: QueueButtonPro
       nextState: 'UNSAVED' as QueueState,
     },
   };
-
   const currentConfig = config[state];
   const Icon = currentConfig.icon;
-
   return (
     <button
       disabled={isMutating}

@@ -1,18 +1,10 @@
-// src/api/apiClient.ts
-/**
- * API Client พร้อมการแยกแยะ Error (Network vs Server Error)
- * และรองรับ AbortSignal (ผ่าน options)
- */
-
 const BASE_URL = 'http://localhost:3001/api';
-
 export class ApiError extends Error {
   constructor(public message: string, public status: number, public type: 'NETWORK' | 'SERVER') {
     super(message);
     this.name = 'ApiError';
   }
 }
-
 async function handleResponse(res: Response) {
   if (!res.ok) {
     const errorBody = await res.json().catch(() => ({ message: res.statusText }));
@@ -20,18 +12,15 @@ async function handleResponse(res: Response) {
   }
   return res.json();
 }
-
 function handleFetchError(error: any): never {
   if (error.name === 'AbortError') {
-    throw error; // ให้ React Query หรือผู้เรียกจัดการต่อ
+    throw error; 
   }
   if (error instanceof ApiError) {
     throw error;
   }
-  // ถ้าไม่ใช่ ApiError และไม่ใช่ AbortError แสดงว่าเป็น Network Error (เช่นเน็ตหลุด)
   throw new ApiError(`Network Error: ${error.message}`, 0, 'NETWORK');
 }
-
 export const apiClient = {
   get: async (endpoint: string, options?: RequestInit) => {
     try {

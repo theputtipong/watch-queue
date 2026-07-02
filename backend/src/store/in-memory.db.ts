@@ -1,6 +1,4 @@
 import { VideoItem, QueueItem } from '../types';
-
-// จำลองข้อมูลแคตตาล็อกวิดีโอ (Content Catalog)
 export const mockCatalog: VideoItem[] = [
   { id: 'v1', title: 'Inception', genre: 'Sci-Fi', thumbnailUrl: 'https://placehold.co/300x170/222222/FFFFFF/png?text=Inception', duration: '2h 28m', year: 2010, rating: 'PG-13' },
   { id: 'v2', title: 'The Matrix', genre: 'Sci-Fi', thumbnailUrl: 'https://placehold.co/300x170/222222/FFFFFF/png?text=The+Matrix', duration: '2h 16m', year: 1999, rating: 'R' },
@@ -11,11 +9,7 @@ export const mockCatalog: VideoItem[] = [
   { id: 'v7', title: 'Forrest Gump', genre: 'Drama', thumbnailUrl: 'https://placehold.co/300x170/222222/FFFFFF/png?text=Forrest+Gump', duration: '2h 22m', year: 1994, rating: 'PG-13' },
   { id: 'v8', title: 'Fight Club', genre: 'Drama', thumbnailUrl: 'https://placehold.co/300x170/222222/FFFFFF/png?text=Fight+Club', duration: '2h 19m', year: 1999, rating: 'R' },
 ];
-
-// จำลองฐานข้อมูลสำหรับเก็บ Queue State ตาม userId
-// รูปแบบ: { [userId]: { [videoId]: QueueItem } }
 export const userQueues: Record<string, Record<string, QueueItem>> = {
-  // ข้อมูลเริ่มต้นสำหรับผู้ใช้ "user1"
   'user1': {
     'v1': { videoId: 'v1', state: 'QUEUED', updatedAt: Date.now() },
     'v4': { videoId: 'v4', state: 'WATCHED', updatedAt: Date.now() },
